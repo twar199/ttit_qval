@@ -1,0 +1,16 @@
+sudo nano /lib/systemd/system/dummy0.service
+
+[Unit]
+Description=dummy0
+After=multi-user.target
+[Service]
+Type=idle
+#ExecStart - путь к скрипту, указывай свой
+ExecStart=/home/locadm/dummy0.sh
+[Install]
+WantedBy=multi-user.target
+
+
+sudo chmod 644 /lib/systemd/system/dummy0.service
+sudo systemctl daemon-reload
+sudo systemctl enable dummy0.service
