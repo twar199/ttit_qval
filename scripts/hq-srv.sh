@@ -19,11 +19,14 @@ sudo systemctl enable ssh
 sed -i 's/#Port 22/Port 2222/' /etc/ssh/sshd_config
 sudo systemctl restart ssh
 
+# Перессылка с порта 22 на порт 2222
+sudo iptables -t nat -A PREROUTING -p tcp --dport 22 -j REDIRECT --to-port 2222
+
 # Разрешаем доступ к SSH по новому порту только с указанных подсетей
-sudo iptables -A INPUT -p tcp --dport 2222 -s 192.168.10.0/24 -j ACCEPT
-sudo iptables -A INPUT -p tcp --dport 2222 -s 192.168.20.0/24 -j ACCEPT
-sudo iptables -A INPUT -p tcp --dport 2222 -s 10.0.10.0/24 -j ACCEPT
-sudo iptables -A INPUT -p tcp --dport 2222 -s 10.0.20.0/24 -j ACCEPT
+sudo iptables -A INPUT -p tcp --dport 2222 -s 192.168.10.0/26 -j ACCEPT
+sudo iptables -A INPUT -p tcp --dport 2222 -s 192.168.20.0/28 -j ACCEPT
+sudo iptables -A INPUT -p tcp --dport 2222 -s 10.0.10.0/30 -j ACCEPT
+sudo iptables -A INPUT -p tcp --dport 2222 -s 10.0.20.0/30 -j ACCEPT
 sudo iptables -A INPUT -p tcp --dport 2222 -s 172.16.0.2 -j DROP
 
 # Сохраняем настройки iptables
